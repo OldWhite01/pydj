@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Input Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div>
+        <input type="text" id="content" placeholder="请输入内容">
+        <button onclick="submitContent()">提交</button>
+    </div>
+    <div id="result">
+        {% if content %}
+            最新输入: {{ content }}
+        {% endif %}
+    </div>
+
+    <script>
+    function submitContent() {
+        var content = $('#content').val();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            data: {
+                'content': content,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                $('#result').html('最新输入: ' + response.content);
+                $('#content').val('');
+            }
+        });
+    }
+    </script>
+</body>
+</html> 
