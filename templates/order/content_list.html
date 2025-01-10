@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+        .content-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .content-item:hover {
+            background-color: #f9f9f9;
+        }
+        .content-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a, .pagination span {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination .current {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .pagination a:hover {
+            background-color: #f5f5f5;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+        .page-info {
+            text-align: right;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .btn-create {
+            float: right;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .btn-create:hover {
+            background-color: #45a049;
+        }
+        .content-text a {
+            color: #333;
+            text-decoration: none;
+        }
+        .content-text a:hover {
+            color: #4CAF50;
+        }
+        .content-english {
+            color: #666;
+            margin: 5px 0;
+            font-style: italic;
+        }
+        .actions {
+            float: right;
+        }
+        .btn-edit {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .btn-edit:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ title }}</h1>
+            <a href="{% url 'order:content_create' %}" class="btn-create">新建内容</a>
+        </div>
+
+        {% if contents %}
+            <div class="page-info">
+                当前第 {{ page_obj.number }} 页，共 {{ paginator.num_pages }} 页
+            </div>
+            <ul class="content-list">
+                {% for content in contents %}
+                    <li class="content-item">
+                        <div class="content-text">
+                            <a href="{% url 'order:content_detail' content.id %}">{{ content.chinese }}</a>
+                        </div>
+                        <div class="content-english">
+                             {{ content.english }}
+                        </div>
+                        <div class="content-meta">
+                            创建时间: {{ content.cur_date|date:"Y-m-d H:i:s" }}
+                            <div class="actions">
+                                <a href="{% url 'order:content_update' content.id %}" class="btn-edit">编辑</a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; 首页</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                    {% endif %}
+
+                    {% for num in paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="current">{{ num }}</span>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+                        <a href="?page={{ paginator.num_pages }}">末页 &raquo;</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="empty-message">
+                暂无数据
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html> 

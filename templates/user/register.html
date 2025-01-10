@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>用户登录</title>
+    <title>用户注册</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .container {
@@ -24,7 +24,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .btn-login {
+        .btn {
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
@@ -32,8 +32,9 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            margin-bottom: 10px;
         }
-        .btn-login:hover {
+        .btn:hover {
             background-color: #45a049;
         }
         .error-message {
@@ -41,24 +42,15 @@
             margin-top: 10px;
             display: none;
         }
-        .register-link {
+        .login-link {
             text-align: center;
             margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .register-link a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-        .register-link a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>用户登录</h2>
+        <h2>用户注册</h2>
         <div class="form-group">
             <label for="username">用户名:</label>
             <input type="text" id="username" name="username" required>
@@ -67,30 +59,36 @@
             <label for="password">密码:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button class="btn-login" onclick="login()">登录</button>
+        <div class="form-group">
+            <label for="email">邮箱:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <button class="btn" onclick="register()">注册</button>
         <div id="error-msg" class="error-message"></div>
-        
-        <div class="register-link">
-            还没有账号？<a href="{% url 'user:register' %}">立即注册</a>
+        <div class="login-link">
+            已有账号？<a href="{% url 'user:login' %}">立即登录</a>
         </div>
     </div>
 
     <script>
-    function login() {
+    function register() {
         var username = $('#username').val();
         var password = $('#password').val();
+        var email = $('#email').val();
         
         $.ajax({
-            url: "{% url 'user:login' %}",
+            url: "{% url 'user:register' %}",
             type: 'POST',
             data: {
                 'username': username,
                 'password': password,
+                'email': email,
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function(response) {
                 if(response.status === 'success') {
-                    window.location.href = "{% url 'user:index' %}";
+                    alert('注册成功！');
+                    window.location.href = "{% url 'user:login' %}";
                 }
             },
             error: function(xhr) {

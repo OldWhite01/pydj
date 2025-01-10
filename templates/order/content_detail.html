@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .content-detail {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+        .content-text {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .content-meta {
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .nav-links {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .content-english {
+            color: #666;
+            margin: 10px 0;
+            font-style: italic;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .btn-edit {
+            background-color: #2196F3;
+        }
+        .btn-edit:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <div class="content-detail">
+            <div class="content-text">{{ content.chinese }}</div>
+            <div class="content-english">{{ content.english }}</div>
+            <div class="content-meta">
+                创建时间: {{ content.cur_date|date:"Y-m-d H:i:s" }}
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'order:content_list' %}" class="btn">返回列表</a>
+            <a href="{% url 'order:content_update' content.id %}" class="btn btn-edit">编辑</a>
+        </div>
+    </div>
+</body>
+</html> 
